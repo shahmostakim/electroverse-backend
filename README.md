@@ -12,10 +12,10 @@ This is the backend API for project: Electroverse Inc. Built with Django REST, t
 /api/products/
  - finds list of products 
 
-/api/products/<id>/
+/api/products/[id]/
  - gets detail information of a product specified by ID 
 
-/api/products/<id>/reviews/
+/api/products/[id]/reviews/
  - gets reviews for a product specified by ID 
 
 
