@@ -78,13 +78,16 @@ class OrderSerializer(serializers.ModelSerializer):
         serializer = OrderItemSerializer(items, many=True) 
         return serializer.data 
     
+
     def get_shippingAddress(self, obj): 
         try:
-            address = ShippingAddressSerializer(obj.shippingAddress, many=False) 
-        except: 
+            address = ShippingAddressSerializer(obj.shippingaddress, many=False).data 
+        except Exception as e: 
             address = False 
-        return address
+            print("Error: ", e) 
+        return address  
     
+
     def get_user(self, obj): 
         user = obj.user
         serializer = UserSerializer(user, many=False)
