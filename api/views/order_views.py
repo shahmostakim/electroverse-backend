@@ -59,6 +59,15 @@ def addOrderItems(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMyOrders(request): 
+    user = request.user
+    myorders = user.order_set.all()
+    serializer = OrderSerializer(myorders, many=True)
+    return Response(serializer.data)  
+
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated]) 
 def getOrderById(request, pk): 
     user = request.user 
