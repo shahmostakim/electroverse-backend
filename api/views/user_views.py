@@ -97,5 +97,10 @@ def getUsers(request):
 @permission_classes([IsAuthenticated, IsAdminUser]) # logged in user has to be admin
 def deleteUser(request, pk): 
     userForDeletion = User.objects.get(id=pk) 
-    userForDeletion.delete() 
-    return Response('User was deleted')
+    # admin user cannot be deleted directly  
+    if(userForDeletion.is_staff):
+        #return Response('Admin user cannot be deleted')
+        return Response({'detail':'Admin user cannot be deleted'}, status=status.HTTP_400_BAD_REQUEST) 
+    else: 
+        userForDeletion.delete() # deleted any normal user 
+        return Response('User was deleted')
