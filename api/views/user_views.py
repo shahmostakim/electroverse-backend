@@ -84,13 +84,15 @@ def updateUserProfile(request):
     return Response(serializer.data)
 
 
-# list of all users 
+# list of all users except logged in user 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsAdminUser]) # logged in user has to be admin 
-def getUsers(request):
-    users = User.objects.all()
+def getUsers(request): # get list of all users except himself
+    logged_in_user = request.user
+    # Exclude the logged-in user from the queryset
+    users = User.objects.exclude(pk=logged_in_user.pk)
     serializer = UserSerializer(users, many=True)
-    return Response(serializer.data) 
+    return Response(serializer.data)  
 
 
 @api_view(['DELETE'])
