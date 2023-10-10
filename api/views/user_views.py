@@ -95,6 +95,36 @@ def getUsers(request): # get list of all users except himself
     return Response(serializer.data)  
 
 
+# get user profile (except logged in user) for updating profile info  
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsAdminUser]) # logged in user has to be admin 
+def getUserById(request, pk): # get list of all users except himself
+    user = User.objects.get(id=pk)
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)  
+
+
+# update user profile (except logged in user) 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated]) # any logged in user has permission 
+def updateUser(request, pk): 
+    user = User.objects.get(id=pk) 
+    data = request.data 
+
+    user.first_name = data['name']
+    user.username = data['email']
+    user.email = data['email']
+    user.is_staff = data['isAdmin']
+
+    try: 
+        user.save()
+        serializer = UserSerializer(user, many=False)
+        return Response(serializer.data)
+    except: 
+        return Response('Error while updating user. Please check database connection')
+     
+
+# Delete user functionality 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated, IsAdminUser]) # logged in user has to be admin
 def deleteUser(request, pk): 
