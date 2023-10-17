@@ -21,3 +21,7 @@ venv/
 
 .DS_Store
 Thumbs.db
+*.json
+
+.env 
+backend/secrets.py 

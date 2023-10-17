@@ -2,6 +2,8 @@
 from pathlib import Path
 import os 
 
+from decouple import config 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -10,10 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@1x#lsl*41edi9-r#4scsv=@sel@4lkem7187i$%4*mlm9#f4p'
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-@1x#lsl*41edi9-r#4scsv=@sel@4lkem7187i$%4*mlm9#f4p')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -115,17 +117,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
+# default sqlite database 
+DATABASES_LOCAL = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
+try: 
+    from .secrets import DBCONFIG
+except ImportError: 
+    DBCONFIG = DATABASES_LOCAL
+
+#remote  database 
+DATABASES = DBCONFIG 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
