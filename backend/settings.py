@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',  
     'rest_framework', 
     'corsheaders',
+    'storages', 
 ]
 
 REST_FRAMEWORK = {
@@ -117,7 +118,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# default sqlite database 
+# default local sqlite database, for remote database settings, refer to bottom section  
 DATABASES_LOCAL = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -125,13 +126,6 @@ DATABASES_LOCAL = {
     }
 }
 
-try: 
-    from .secrets import DBCONFIG
-except ImportError: 
-    DBCONFIG = DATABASES_LOCAL
-
-#remote  database 
-DATABASES = DBCONFIG 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -188,3 +182,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # allows api requests from any origin 
 CORS_ALLOW_ALL_ORIGINS = True 
+
+
+# load secret settings 
+try: 
+    from .secrets import DBCONFIG, MEDIA_FILE_STORAGE, KEY_ID, MY_ACCESS_KEY, BUCKET_NAME
+except ImportError: 
+    DBCONFIG = DATABASES_LOCAL
+
+#remote  database 
+DATABASES = DBCONFIG 
+# remote media file storage  
+DEFAULT_FILE_STORAGE = MEDIA_FILE_STORAGE 
+AWS_ACCESS_KEY_ID = KEY_ID
+AWS_SECRET_ACCESS_KEY = MY_ACCESS_KEY 
+AWS_STORAGE_BUCKET_NAME = BUCKET_NAME  
+AWS_DEFAULT_ACL = None 
+AWS_S3_FILE_OVERWRITE = True   
+AWS_QUERYSTRING_AUTH = False 
+ 
