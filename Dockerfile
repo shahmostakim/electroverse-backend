@@ -11,7 +11,7 @@ COPY . /app
 
 # Copy secrets.py from the host system into the image
 COPY /home/ec2-user/secrets.py /app/backend/secrets.py
-COPY /home/ec2-user/.env /app/.env
+#COPY /home/ec2-user/.env /app/.env
 
 # Install dependencies and build the application
 RUN pip install --no-cache-dir -r requirements.txt
