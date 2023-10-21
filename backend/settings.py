@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-@1x#lsl*41edi9-r#4scsv=@sel@4lkem7187i$%4*mlm9#f4p')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -183,8 +183,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # allows api requests from any origin 
 CORS_ALLOW_ALL_ORIGINS = True 
 
-
-# load secret settings 
+'''
+# load secret settings (inactive now)
 try: 
     from .secrets import DBCONFIG, MEDIA_FILE_STORAGE, KEY_ID, MY_ACCESS_KEY, BUCKET_NAME
 except ImportError: 
@@ -192,12 +192,31 @@ except ImportError:
 
 #remote  database 
 DATABASES = DBCONFIG 
-# remote media file storage  
-DEFAULT_FILE_STORAGE = MEDIA_FILE_STORAGE 
-AWS_ACCESS_KEY_ID = KEY_ID
-AWS_SECRET_ACCESS_KEY = MY_ACCESS_KEY 
-AWS_STORAGE_BUCKET_NAME = BUCKET_NAME  
+'''
+
+
+# remote media file storage using secrets.py  
+#DEFAULT_FILE_STORAGE = MEDIA_FILE_STORAGE 
+#AWS_ACCESS_KEY_ID = KEY_ID
+#AWS_SECRET_ACCESS_KEY = MY_ACCESS_KEY 
+#AWS_STORAGE_BUCKET_NAME = BUCKET_NAME  
 AWS_DEFAULT_ACL = None 
 AWS_S3_FILE_OVERWRITE = True   
 AWS_QUERYSTRING_AUTH = False 
- 
+
+# remote media file storage using env variables 
+DEFAULT_FILE_STORAGE = config('MEDIA_FILE_STORAGE')
+AWS_ACCESS_KEY_ID = config('KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('MY_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('BUCKET_NAME')
+
+DATABASES = {
+    'default': {
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
+    }
+} 
