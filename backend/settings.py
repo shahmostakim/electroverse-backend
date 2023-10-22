@@ -7,6 +7,13 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# cleans and returns a list of allowed hosts 
+def getAllowedHostsCleaned(rawValue): 
+    allowedHosts = [] 
+    for item in rawValue.split(','): 
+        allowedHosts.append(item.strip())
+    return allowedHosts
+
 try: 
     SECRET_KEY = config('SECRET_KEY')
     DEBUG = config('DEBUG', default=False, cast=bool)
@@ -17,7 +24,8 @@ try:
 except: 
     SECRET_KEY = os.environ.get('SECRET_KEY')
     DEBUG = os.environ.get('DEBUG')
-    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
+    ALLOWED_HOSTS_RAW = os.environ.get('ALLOWED_HOSTS')
+    ALLOWED_HOSTS = getAllowedHostsCleaned(ALLOWED_HOSTS_RAW)
 
 
 # Application definition
