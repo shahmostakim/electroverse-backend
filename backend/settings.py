@@ -7,20 +7,17 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
-
-#ALLOWED_HOSTS = []
-# fetchs the value and transforms into a list using lambda function by comma separating 
-# the values and then cleaning up whitespaces  
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=lambda v: [s.strip() for s in v.split(',')])
+try: 
+    SECRET_KEY = config('SECRET_KEY')
+    DEBUG = config('DEBUG', default=False, cast=bool)
+    #ALLOWED_HOSTS = []
+    # fetchs the value and transforms into a list using lambda function by comma separating 
+    # the values and then cleaning up whitespaces  
+    ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=lambda v: [s.strip() for s in v.split(',')])
+except: 
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    DEBUG = os.environ.get('DEBUG')
+    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -207,19 +204,39 @@ AWS_DEFAULT_ACL = None
 AWS_S3_FILE_OVERWRITE = True   
 AWS_QUERYSTRING_AUTH = False 
 
-# remote media file storage using env variables 
-DEFAULT_FILE_STORAGE = config('MEDIA_FILE_STORAGE')
-AWS_ACCESS_KEY_ID = config('KEY_ID')
-AWS_SECRET_ACCESS_KEY = config('MY_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = config('BUCKET_NAME')
+try: 
+    # remote media file storage using env variables 
+    DEFAULT_FILE_STORAGE = config('MEDIA_FILE_STORAGE')
+    AWS_ACCESS_KEY_ID = config('KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('MY_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('BUCKET_NAME')
+except: 
+    DEFAULT_FILE_STORAGE = os.environ.get('MEDIA_FILE_STORAGE')
+    AWS_ACCESS_KEY_ID = os.environ.get('KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('MY_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('BUCKET_NAME')
 
-DATABASES = {
-    'default': {
-        'ENGINE': config('DB_ENGINE'),
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
-    }
-} 
+
+try: 
+    DATABASES = {
+        'default': {
+            'ENGINE': config('DB_ENGINE'),
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT'),
+        }
+    } 
+except: 
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get('DB_ENGINE'),
+            'NAME': os.environ.get('DB_NAME'),
+            'USER': os.environ.get('DB_USER'),
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
+            'HOST': os.environ.get('DB_HOST'),
+            'PORT': os.environ.get('DB_PORT'),
+        }
+    } 
+
