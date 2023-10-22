@@ -24,8 +24,9 @@ try:
 except: 
     SECRET_KEY = os.environ.get('SECRET_KEY')
     DEBUG = os.environ.get('DEBUG')
-    ALLOWED_HOSTS_RAW = os.environ.get('ALLOWED_HOSTS')
-    ALLOWED_HOSTS = getAllowedHostsCleaned(ALLOWED_HOSTS_RAW)
+    #ALLOWED_HOSTS_RAW = os.environ.get('ALLOWED_HOSTS')
+    #ALLOWED_HOSTS = getAllowedHostsCleaned(ALLOWED_HOSTS_RAW)
+    ALLOWED_HOSTS = ['18.222.169.81']
 
 
 # Application definition
