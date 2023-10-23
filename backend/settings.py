@@ -14,7 +14,7 @@ def getAllowedHostsCleaned(rawValue):
         allowedHosts.append(item.strip())
     return allowedHosts
 
-'''
+
 try: 
     SECRET_KEY = config('SECRET_KEY')
     DEBUG = config('DEBUG', default=False, cast=bool)
@@ -23,12 +23,11 @@ try:
     # the values and then cleaning up whitespaces  
     ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=lambda v: [s.strip() for s in v.split(',')])
 except: 
-'''
-SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = os.environ.get('DEBUG')
-#ALLOWED_HOSTS_RAW = os.environ.get('ALLOWED_HOSTS')
-#ALLOWED_HOSTS = getAllowedHostsCleaned(ALLOWED_HOSTS_RAW)
-ALLOWED_HOSTS = ['18.222.169.81']
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    DEBUG = os.environ.get('DEBUG')
+    #ALLOWED_HOSTS_RAW = os.environ.get('ALLOWED_HOSTS')
+    #ALLOWED_HOSTS = getAllowedHostsCleaned(ALLOWED_HOSTS_RAW)
+    ALLOWED_HOSTS = ['18.222.169.81']
 
 
 # Application definition
@@ -215,7 +214,7 @@ AWS_DEFAULT_ACL = None
 AWS_S3_FILE_OVERWRITE = True   
 AWS_QUERYSTRING_AUTH = False 
 
-'''
+
 try: 
     # remote media file storage using env variables 
     DEFAULT_FILE_STORAGE = config('MEDIA_FILE_STORAGE')
@@ -223,13 +222,12 @@ try:
     AWS_SECRET_ACCESS_KEY = config('MY_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('BUCKET_NAME')
 except:
-''' 
-DEFAULT_FILE_STORAGE = os.environ.get('MEDIA_FILE_STORAGE')
-AWS_ACCESS_KEY_ID = os.environ.get('KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('MY_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('BUCKET_NAME')
+    DEFAULT_FILE_STORAGE = os.environ.get('MEDIA_FILE_STORAGE')
+    AWS_ACCESS_KEY_ID = os.environ.get('KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('MY_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('BUCKET_NAME')
 
-'''
+
 try: 
     DATABASES = {
         'default': {
@@ -242,15 +240,14 @@ try:
         }
     } 
 except: 
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('DB_ENGINE'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
-    }
-} 
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get('DB_ENGINE'),
+            'NAME': os.environ.get('DB_NAME'),
+            'USER': os.environ.get('DB_USER'),
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
+            'HOST': os.environ.get('DB_HOST'),
+            'PORT': os.environ.get('DB_PORT'),
+        }
+    } 
 
