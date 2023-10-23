@@ -29,4 +29,7 @@ COPY --from=builder /app /app
 # PORT
 EXPOSE 8002
 
-CMD ["python","manage.py","runserver","0.0.0.0:8002"] 
+#CMD ["python","manage.py","runserver","0.0.0.0:8002"] 
+
+# use gunicorn to run application
+CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8002"] 
