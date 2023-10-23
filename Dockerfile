@@ -6,18 +6,27 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-# Copy your application code
+# Install dependencies and build the application
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
 COPY . /app
 
-# Copy secrets.py from the host system into the image
-#COPY /home/ec2-user/secrets.py /app/backend/secrets.py
-#COPY /home/ec2-user/.env /app/.env
-
-# Install dependencies and build the application
-RUN pip install --no-cache-dir -r requirements.txt
 RUN python manage.py migrate
 
-# Additional Dockerfile instructions for running your application
+# static files 
+RUN python manage.py collectstatic --noinput
+
+# Stage 2: Create a lightweight production image
+FROM python:3.8-slim
+
+WORKDIR /app
+
+# Copy the dependencies and static files from the builder stage
+COPY --from=builder /app /app
+
+# PORT
 EXPOSE 8002
 
 CMD ["python","manage.py","runserver","0.0.0.0:8002"] 
