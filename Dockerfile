@@ -13,22 +13,22 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . /app
 
-RUN python manage.py migrate
-
 # static files 
 RUN python manage.py collectstatic --noinput
 
-# Stage 2: Create a lightweight production image
-FROM python:3.8-slim
+RUN python manage.py migrate
 
-WORKDIR /app
+# Stage 2: Create a lightweight production image
+#FROM python:3.8-slim
+
+#WORKDIR /app
 
 # Copy the dependencies and static files from the builder stage
-COPY --from=builder /app /app
+#COPY --from=builder /app /app
 
 # Install dependencies and build the application
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+#COPY requirements.txt .
+#RUN pip install --no-cache-dir -r requirements.txt
 
 # PORT
 EXPOSE 8002
