@@ -26,6 +26,8 @@ WORKDIR /app
 # Copy the dependencies and static files from the builder stage
 COPY --from=builder /app /app
 
+RUN pip install gunicorn==21.2.0
+
 # PORT
 EXPOSE 8002
 
