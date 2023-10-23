@@ -26,12 +26,13 @@ WORKDIR /app
 # Copy the dependencies and static files from the builder stage
 COPY --from=builder /app /app
 
-RUN pip install gunicorn==21.2.0
+# Install dependencies and build the application
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # PORT
 EXPOSE 8002
 
- 
 #CMD ["python","manage.py","runserver","0.0.0.0:8002"] 
 
 # use gunicorn to run application
