@@ -128,7 +128,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# default local sqlite database, for remote database settings, refer to bottom section  
+# default local sqlite database, for remote database settings, refer to bottom section 
+# this DB settings is not being used 
 DATABASES_LOCAL = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
