@@ -31,7 +31,7 @@ RUN pip install gunicorn==21.2.0
 # PORT
 EXPOSE 8002
 
-# manage.py script is used only for development 
+ 
 #CMD ["python","manage.py","runserver","0.0.0.0:8002"] 
 
 # use gunicorn to run application
