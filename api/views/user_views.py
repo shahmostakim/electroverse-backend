@@ -104,7 +104,7 @@ def getUserById(request, pk): # get list of all users except himself
     return Response(serializer.data)  
 
 
-# update user profile (except logged in user) 
+# update another user profile (except logged in user) 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated]) # any logged in user has permission 
 def updateUser(request, pk): 
